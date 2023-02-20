@@ -14,7 +14,7 @@ TECH_TEMPLATE = 'about/tech.html'
 
 
 class AboutURLTests(TestCase):
- 
+
     def test_urls_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""
         urls_templates = {
