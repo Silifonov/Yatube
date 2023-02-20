@@ -1,4 +1,4 @@
-from django.shortcuts import(
+from django.shortcuts import (
     render,
     get_object_or_404,
     redirect
@@ -8,16 +8,16 @@ from django.contrib.auth import get_user_model
 from django.views.decorators.cache import cache_page
 from django.core.exceptions import ObjectDoesNotExist
 from .utils import paginator
-from .models import(
+from .models import (
     Post,
     Group,
     Follow
 )
-from .forms import(
+from .forms import (
     PostForm,
     CommentForm
 )
-from .const import(
+from .const import (
     INDEX_TEMPLATE,
     GROUP_LIST_TEMPLATE,
     PROFILE_TEMPLATE,

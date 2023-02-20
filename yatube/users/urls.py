@@ -1,5 +1,5 @@
 from django.urls import path
-from django.contrib.auth.views import(
+from django.contrib.auth.views import (
     LogoutView,
     LoginView,
     PasswordResetView,
@@ -10,7 +10,7 @@ from django.contrib.auth.views import(
     PasswordChangeDoneView,
 )
 from . import views
-from .const import(
+from .const import (
     LOGGED_OUT_TEMPLATE,
     LOGIN_TEMPLATE,
     PASSWORD_RESET_TEMPLATE,
@@ -19,7 +19,7 @@ from .const import(
     PASSWORD_RESET_COMPLETE_TEMPLATE,
     PASSWORD_CHANGE_TEMPLATE,
     PASSWORD_CHANGE_DONE_TEMPLATE,
-) 
+)
 
 
 app_name = 'users'

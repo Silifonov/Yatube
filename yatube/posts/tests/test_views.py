@@ -8,18 +8,18 @@ from django.core.cache import cache
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
 from posts.utils import POSTS_PER_PAGE
-from django.test import(
+from django.test import (
     TestCase,
     Client,
     override_settings
 )
-from posts.models import(
+from posts.models import (
     Post,
     Group,
     Comment,
     Follow,
 )
-from posts.const import(
+from posts.const import (
     INDEX_TEMPLATE,
     PROFILE_TEMPLATE,
     POST_CREATE_TEMPLATE,
@@ -46,6 +46,7 @@ TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
 
 # количество постов в тестовой БД для тестирования работы поджинатора
 POSTS_IN_TEST_DB = POSTS_PER_PAGE + 3
+
 
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class PostPagesTests(TestCase):
@@ -191,7 +192,7 @@ class PostPagesTests(TestCase):
         ]
         for attribute in attributes:
             self.assertEqual(
-                getattr(response.context.get('form').instance, attribute), 
+                getattr(response.context.get('form').instance, attribute),
                 getattr(self.post, attribute)
             )
         self.assertTrue(response.context.get('is_edit'))
@@ -263,7 +264,6 @@ class PostPagesTests(TestCase):
             self.follow_index_url)
         posts_unfollower = response_unfollower.context['page_obj']
         self.assertNotIn(new_post, posts_unfollower)
-
 
 
 class PaginatorTest(TestCase):

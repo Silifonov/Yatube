@@ -48,7 +48,9 @@ class PostURLTests(TestCase):
         cls.post_comment_url = f'/posts/{str(cls.post.id)}/comment/'
         cls.follow_index_url = '/follow/'
         cls.profile_follow_url = f'/profile/{cls.user_author.username}/follow/'
-        cls.profile_unfollow_url = f'/profile/{cls.user_author.username}/unfollow/'
+        cls.profile_unfollow_url = (
+            f'/profile/{cls.user_author.username}/unfollow/'
+        )
 
     def setUp(self):
         self.guest_client = Client()
@@ -139,7 +141,7 @@ class PostURLTests(TestCase):
         for url in url_follow_unfollow_redirect:
             response = self.authorized_client_not_author.get(url, follow=True)
             self.assertRedirects(response, self.profile_url)
-    
+
     def test_unexisting_page(self):
         """Страница с несуществующим адресом возвращает 404 (NOT_FOUND)"""
         response = self.guest_client.get('/unexisting_page/')

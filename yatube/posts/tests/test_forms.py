@@ -20,6 +20,7 @@ USERS_LOGIN_URL_NAME = 'users:login'
 POST_CREATE_URL = '/create/'
 POST_COMMENT_URL_NAME = 'posts:add_comment'
 
+
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class PostFormTests(TestCase):
     @classmethod
@@ -139,7 +140,8 @@ class PostFormTests(TestCase):
         self.assertEqual(
             response.context.get('post').author, self.user_author)
         self.assertEqual(
-            response.context.get('post').image.name, f'posts/{self.uploaded_2.name}')
+            response.context.get('post').image.name,
+            f'posts/{self.uploaded_2.name}')
         self.assertEqual(Post.objects.count(), post_count)
 
     def test_add_comment(self):
@@ -150,7 +152,7 @@ class PostFormTests(TestCase):
             author=self.user_author,
             text='Test text',
         )
-        form_data = {'text': 'Test comment',}
+        form_data = {'text': 'Test comment', }
         post_detail_url = reverse(
             POST_DETAIL_URL_NAME, kwargs={'post_id': post.id}
         )
@@ -167,7 +169,7 @@ class PostFormTests(TestCase):
             response.context.get('post').comments.first().text,
             form_data['text']
         )
-        
+
         # Проверка редиректа неавторизованного пользователя
         self.guest_client = Client()
         response_guest = self.guest_client.post(
