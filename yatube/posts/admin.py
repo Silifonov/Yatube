@@ -2,7 +2,8 @@ from django.contrib import admin
 from .models import (
     Post,
     Group,
-    Follow
+    Follow,
+    Comment,
 )
 
 
@@ -42,3 +43,15 @@ class FollowAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Follow, FollowAdmin)
+
+
+class CommentAdmin(admin.ModelAdmin):
+    list_display = (
+        'post',
+        'author',
+        'text',
+        'created',
+    )
+
+
+admin.site.register(Comment, CommentAdmin)

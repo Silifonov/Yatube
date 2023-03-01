@@ -5,6 +5,8 @@ User = get_user_model()
 
 # первые n символов из текста поста
 POST_NAME_LETTERS_COUNT = 15
+# первые n символов из текста комментария
+COMMENT_NAME_LETTERS_COUNT = 15
 
 
 class Post(models.Model):
@@ -78,31 +80,43 @@ class Comment(models.Model):
         related_name='comments',
         on_delete=models.CASCADE
     )
-    text = models.TextField('Текст')
+    text = models.TextField(
+        'Текст',
+        help_text='Оставьте комментарий к этому посту'
+    )
     created = models.DateTimeField(
         'Дата',
         auto_now_add=True,
     )
 
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+
+    def __str__(self):
+        return self.text[:COMMENT_NAME_LETTERS_COUNT]
+
 
 class Follow(models.Model):
     user = models.ForeignKey(
         User,
-        verbose_name='Follower',
+        verbose_name='Подписчик',
         related_name='follower',
         on_delete=models.CASCADE
     )
     author = models.ForeignKey(
         User,
-        verbose_name='Following',
+        verbose_name='Автор',
         related_name='following',
         on_delete=models.CASCADE
     )
 
     class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
         constraints = [
             models.UniqueConstraint(
-                fields=['user', 'author'],
+                fields=('user', 'author'),
                 name='unique_follow'
             )
         ]

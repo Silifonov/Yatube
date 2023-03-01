@@ -6,7 +6,6 @@ from django.shortcuts import (
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.views.decorators.cache import cache_page
-from django.core.exceptions import ObjectDoesNotExist
 from .utils import paginator
 from .models import (
     Post,
@@ -56,14 +55,11 @@ def group_posts(request, slug):
 def profile(request, username):
     author = get_object_or_404(User, username=username)
     post_list = author.posts.select_related('group').all()
-    if request.user.is_authenticated:
-        try:
-            following = Follow.objects.get(
-                user=request.user, author=author)
-        except ObjectDoesNotExist:
-            following = False
-    else:
-        following = False
+    is_following = (
+        request.user.is_authenticated
+        and Follow.objects.filter(user=request.user, author=author).exists()
+    )
+    following = True if is_following else False
     page_obj = paginator(request, post_list)
     context = {
         'page_obj': page_obj,
@@ -104,7 +100,7 @@ def post_create(request):
 
 @login_required
 def post_edit(request, post_id):
-    post = Post.objects.select_related('author', 'group').get(id=post_id)
+    post = Post.objects.get(id=post_id)
     if post.author != request.user:
         return redirect(POST_DETAIL_URL_NAME, post_id)
     form = PostForm(
@@ -155,5 +151,5 @@ def profile_follow(request, username):
 @login_required
 def profile_unfollow(request, username):
     author = get_object_or_404(User, username=username)
-    Follow.objects.get(user=request.user, author=author).delete()
+    Follow.objects.filter(user=request.user, author=author).delete()
     return redirect(PROFILE_URL_NAME, username)
